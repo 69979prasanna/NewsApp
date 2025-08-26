@@ -15,7 +15,7 @@ export default class News extends Component {
   }
 
   async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=e48f6e1677c84706975cc3ee80feaa7f&page=1&pagesize=3`
+    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=in&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=1&pageSize=3`
     this.setState({ loading: true })
     let data = await fetch(url)
     let parsedata = await data.json()
@@ -28,7 +28,7 @@ export default class News extends Component {
 
   handlenext = async () => {
     if (!(this.state.page + 1 > Math.ceil(this.state.totalresult / 3))) {
-      let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=e48f6e1677c84706975cc3ee80feaa7f&page=${this.state.page + 1}&pagesize=3`
+      let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=in&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${this.state.page + 1}&pageSize=3`
       this.setState({ loading: true })
       let data = await fetch(url)
       let parsedata = await data.json()
@@ -40,8 +40,10 @@ export default class News extends Component {
     }
   }
 
+
+
   handleprev = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=e48f6e1677c84706975cc3ee80feaa7f&page=${this.state.page - 1}&pagesize=3`
+    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=in&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${this.state.page - 1}&pageSize=3`
     this.setState({ loading: true })
     let data = await fetch(url)
     let parsedata = await data.json()
@@ -66,7 +68,7 @@ export default class News extends Component {
                     <Newsitem
                       title={element.title ? element.title.slice(0, 30) : "No Title"}
                       description={element.description ? element.description.slice(0, 50) : "No Description"}
-                      imgurl={element.urlToImage}
+                      imgurl={element.image}
                       newsurl={element.url}
                     />
                   </div>
