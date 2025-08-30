@@ -8,24 +8,28 @@ import{
   Routes,
   Route,
   }from "react-router-dom"
-
-export default class App extends Component {
+  export default class App extends Component {
+    state = {
+      country:"us"
+    }
+    setCountry = (newCountry) =>{
+      this.setState({country:newCountry})
+    }
   render() {
     return (
       <div>
         <HashRouter>
-        <Navbar/>
+        <Navbar setCountry={this.setCountry}/>
         <Routes>
           <Route exact path="/About" element={<About />} />
-          <Route exact path="/" element={<News key={'general'} category="general" />} /> 
-          <Route exact path="/health" element={<News key={'health'} category="health" />} /> 
-          <Route exact path="/business" element={<News key={'business'} category="business" />} /> 
-          <Route exact path="/science" element={<News key={'science'} category="science" />} /> 
-          <Route exact path="/sports" element={<News key={'sports'} category="sports" />} /> 
-          <Route exact path="/entertainment" element={<News key={'entertainment'} category="entertainment" />} /> 
-          <Route exact path="/technology" element={<News key={'technology'} category="technology" />} /> 
+          <Route exact path="/" element={<News country={this.state.country}  category="general" />} /> 
+          <Route exact path="/health" element={<News country={this.state.country} category="health" />} /> 
+          <Route exact path="/business" element={<News country={this.state.country} category="business" />} /> 
+          <Route exact path="/science" element={<News country={this.state.country} category="science" />} /> 
+          <Route exact path="/sports" element={<News country={this.state.country} category="sports" />} /> 
+          <Route exact path="/entertainment" element={<News country={this.state.country}  category="entertainment" />} /> 
+          <Route exact path="/technology" element={<News country={this.state.country}  category="technology" />} /> 
         </Routes>
-    
         </HashRouter>
       </div>
     )

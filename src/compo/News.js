@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import Newsitem from './Newsitem'
 import Loading from './Loading';
 import PropTypes from 'prop-types'
+
 export default class News extends Component {
   constructor() {
     super();
-    console.log("hello")
     this.state = {
       articles: [],
       loading: false,
@@ -15,8 +15,18 @@ export default class News extends Component {
   }
 
   async componentDidMount() {
-    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=in&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=1&pageSize=3`
-    this.setState({ loading: true })
+    this.fetchNews(1)
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (prevProps.country !== this.props.country || prevProps.category !== this.props.category) {
+      this.fetchNews(1)
+    }
+  }
+
+  fetchNews = async (pageNo) => {
+    this.setState({ loading: true, page: pageNo })
+    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}&pageSize=3`
     let data = await fetch(url)
     let parsedata = await data.json()
     this.setState({
@@ -26,35 +36,20 @@ export default class News extends Component {
     })
   }
 
-  handlenext = async () => {
+  handlenext = () => {
     if (!(this.state.page + 1 > Math.ceil(this.state.totalresult / 3))) {
-      let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=in&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${this.state.page + 1}&pageSize=3`
-      this.setState({ loading: true })
-      let data = await fetch(url)
-      let parsedata = await data.json()
-      this.setState({
-        page: this.state.page + 1,
-        articles: parsedata.articles,
-        loading: false
-      })
+      this.fetchNews(this.state.page + 1)
     }
   }
 
-
-
-  handleprev = async () => {
-    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=in&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${this.state.page - 1}&pageSize=3`
-    this.setState({ loading: true })
-    let data = await fetch(url)
-    let parsedata = await data.json()
-    this.setState({
-      page: this.state.page - 1,
-      articles: parsedata.articles,
-      loading: false
-    })
+  handleprev = () => {
+    if (this.state.page > 1) {
+      this.fetchNews(this.state.page - 1)
+    }
   }
 
   render() {
+    console.log("Props in News:", this.props) 
     return (
       <div>
         <div className="container my-3">
@@ -88,10 +83,12 @@ export default class News extends Component {
     )
   }
 }
+
 News.defaultProps = {
   category: 'general'
 }
 
 News.propTypes = {
   category: PropTypes.string,
+  country: PropTypes.string.isRequired
 }

@@ -1,6 +1,24 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import {getCode} from 'country-list'
 export default class Navbar extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      searchInput:""
+    }
+  }
+  handleSearch = (e) =>{
+    e.preventDefault()
+    const code = getCode(this.state.searchInput.trim())
+    if(code){
+      this.props.setCountry(code.toLowerCase())
+      this.setState({searchInput:""})
+    }
+    else{
+      alert("Invalid country name, try again!")
+    }
+  }
   render() {
     return (
       <div>
@@ -18,24 +36,24 @@ export default class Navbar extends Component {
         <li className="nav-item">
           <Link className="nav-link" to="/About">About</Link>
         </li>
-         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+         <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Category
           </a>
-          <ul class="dropdown-menu">
-            <li><Link class="dropdown-item" to="/business">Business</Link></li>
-            <li><Link class="dropdown-item" to="/entertainment">Entertainment</Link></li>
-            <li><Link class="dropdown-item" to="/health">Health</Link></li>
-            <li><Link class="dropdown-item" to="/science">Science</Link></li>
-            <li><Link class="dropdown-item" to="/sports">Sports</Link></li>
-            <li><Link class="dropdown-item" to="/technology">Technology</Link></li>
+          <ul className="dropdown-menu">
+            <li><Link className="dropdown-item" to="/business">Business</Link></li>
+            <li><Link className="dropdown-item" to="/entertainment">Entertainment</Link></li>
+            <li><Link className="dropdown-item" to="/health">Health</Link></li>
+            <li><Link className="dropdown-item" to="/science">Science</Link></li>
+            <li><Link className="dropdown-item" to="/sports">Sports</Link></li>
+            <li><Link className="dropdown-item" to="/technology">Technology</Link></li>
           </ul>
         </li>
 
       </ul>
-        <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Country" aria-label="Search"/>
-      <button class="btn btn-outline-primary" type="submit">search</button>
+        <form className="d-flex" role="search" onSubmit={this.handleSearch}>
+      <input className="form-control me-2" type="search" placeholder="Country" aria-label="Search" value={this.state.searchInput} onChange={(e)=> this.setState({searchInput: e.target.value})}/>
+      <button className="btn btn-outline-primary" type="submit">search</button>
     </form>
     </div>
   </div>
