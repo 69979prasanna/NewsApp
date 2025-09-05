@@ -29,6 +29,7 @@ import{
           <Route exact path="/sports" element={<News country={this.state.country} category="sports" />} /> 
           <Route exact path="/entertainment" element={<News country={this.state.country}  category="entertainment" />} /> 
           <Route exact path="/technology" element={<News country={this.state.country}  category="technology" />} /> 
+          <Route exact path="/anime" element={<News country={this.state.country}  category="anime" />} /> 
         </Routes>
         </HashRouter>
       </div>

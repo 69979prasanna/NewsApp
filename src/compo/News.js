@@ -27,6 +27,12 @@ export default class News extends Component {
   fetchNews = async (pageNo) => {
     this.setState({ loading: true, page: pageNo })
     let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}&pageSize=3`
+    
+  if (this.props.category === 'anime') {
+    url = `https://gnews.io/api/v4/search?q=anime&lang=en&country=${this.props.country}&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}&pageSize=3`;
+  } else {
+    url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}&pageSize=3`;
+  }
     let data = await fetch(url)
     let parsedata = await data.json()
     this.setState({

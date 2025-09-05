@@ -47,9 +47,9 @@ export default class Navbar extends Component {
             <li><Link className="dropdown-item" to="/science">Science</Link></li>
             <li><Link className="dropdown-item" to="/sports">Sports</Link></li>
             <li><Link className="dropdown-item" to="/technology">Technology</Link></li>
+            <li><Link className="dropdown-item" to="/anime">Anime</Link></li>
           </ul>
         </li>
-
       </ul>
         <form className="d-flex" role="search" onSubmit={this.handleSearch}>
       <input className="form-control me-2" type="search" placeholder="Country" aria-label="Search" value={this.state.searchInput} onChange={(e)=> this.setState({searchInput: e.target.value})}/>
