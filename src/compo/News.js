@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Newsitem from './Newsitem'
 import Loading from './Loading';
 import PropTypes from 'prop-types'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default class News extends Component {
   constructor() {
@@ -19,40 +20,37 @@ export default class News extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if (prevProps.country !== this.props.country || prevProps.category !== this.props.category) {
+    if  (prevProps.category !== this.props.category) {
       this.fetchNews(1)
     }
   }
 
   fetchNews = async (pageNo) => {
-    this.setState({ loading: true, page: pageNo })
-    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}&pageSize=3`
-    
+  this.setState({ loading: true, page: pageNo });
+
+  let url;
   if (this.props.category === 'anime') {
-    url = `https://gnews.io/api/v4/search?q=anime&lang=en&country=${this.props.country}&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}&pageSize=3`;
+    url = `https://gnews.io/api/v4/search?q=anime&lang=en&max=6&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}`;
   } else {
-    url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&max=3&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}&pageSize=3`;
-  }
-    let data = await fetch(url)
-    let parsedata = await data.json()
-    this.setState({
-      articles: parsedata.articles,
-      totalresult: parsedata.totalResults,
-      loading: false
-    })
+    url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&max=6&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}`;
   }
 
-  handlenext = () => {
-    if (!(this.state.page + 1 > Math.ceil(this.state.totalresult / 3))) {
-      this.fetchNews(this.state.page + 1)
-    }
-  }
-
-  handleprev = () => {
-    if (this.state.page > 1) {
-      this.fetchNews(this.state.page - 1)
-    }
-  }
+  let data = await fetch(url);
+  let parsedata = await data.json();
+let newArticles = Array.isArray(parsedata.articles) ? parsedata.articles : [];
+  this.setState((prevState) => ({
+    articles: pageNo === 1 
+      ? newArticles
+      : [...prevState.articles, ...newArticles], 
+    totalresult: parsedata.totalResults || newArticles,
+    loading: false
+  }));
+};
+fetchMoreData = async () => {
+  this.setState({ page: this.state.page + 1 }, () => {
+    this.fetchNews(this.state.page);  
+  });
+}
 
   render() {
     console.log("Props in News:", this.props) 
@@ -60,9 +58,18 @@ export default class News extends Component {
       <div>
         <div className="container my-3">
           <h2 className='text-center my-3'>NewsApp - Top Headlines</h2>
-          <div className="row my-2">
-            {this.state.loading && <Loading />}
-            {(!this.state.loading && this.state.articles && Array.isArray(this.state.articles)) ? (
+              <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.articles.length !==this.state.totalResults}
+          loader={this.state.loading && <Loading />}
+        >
+          <div className="container">
+
+              {this.state.loading && <Loading />}
+           <div className="row my-2">
+       
+            {( this.state.articles && Array.isArray(this.state.articles)) ? (
               this.state.articles.map((element) => {
                 return (
                   <div className="col-md-4 my-3 d-flex align-items-stretch" key={element.url}>
@@ -79,11 +86,8 @@ export default class News extends Component {
               <p className='text-center'></p>
             )}
           </div>
-        </div>
-
-        <div className="container d-flex justify-content-between">
-          <button disabled={this.state.page <= 1} type="button" className="btn btn-dark" onClick={this.handleprev}>&larr; Previous</button>
-          <button disabled={this.state.page + 1 >= Math.ceil(this.state.totalresult / 3)} type="button" className="btn btn-dark" onClick={this.handlenext}>Next &rarr;</button>
+            </div>
+ </InfiniteScroll>
         </div>
       </div>
     )

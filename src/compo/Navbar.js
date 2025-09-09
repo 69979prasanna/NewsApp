@@ -1,28 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import {getCode} from 'country-list'
+
 export default class Navbar extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      searchInput:""
-    }
-  }
-  handleSearch = (e) =>{
-    e.preventDefault()
-    const code = getCode(this.state.searchInput.trim())
-    if(code){
-      this.props.setCountry(code.toLowerCase())
-      this.setState({searchInput:""})
-    }
-    else{
-      alert("Invalid country name, try again!")
-    }
-  }
+ 
   render() {
     return (
       <div>
-        <nav className="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        <nav className="navbar fixed-top bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div className="container-fluid">
     <Link className="navbar-brand" to="/">NewsApp</Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,10 +35,7 @@ export default class Navbar extends Component {
           </ul>
         </li>
       </ul>
-        <form className="d-flex" role="search" onSubmit={this.handleSearch}>
-      <input className="form-control me-2" type="search" placeholder="Country" aria-label="Search" value={this.state.searchInput} onChange={(e)=> this.setState({searchInput: e.target.value})}/>
-      <button className="btn btn-outline-primary" type="submit">search</button>
-    </form>
+       
     </div>
   </div>
 </nav>
