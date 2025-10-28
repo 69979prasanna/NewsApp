@@ -30,7 +30,7 @@ export default class News extends Component {
 
   let url;
   if (this.props.category === 'anime') {
-    url = `https://gnews.io/api/v4/search?q=anime&lang=en&max=6&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}`;
+    url = `https://gnews.io/api/v4/search?q=anime&lang=en&country=us&max=10&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}`;
   } else {
     url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&max=6&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}`;
   }
