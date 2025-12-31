@@ -27,12 +27,14 @@ export default class News extends Component {
 
   fetchNews = async (pageNo) => {
   this.setState({ loading: true, page: pageNo });
-
+  const anime = process.env.REACT_APP_ANIME
+  const http = process.env.REACT_APP_HTTP
+  const api = process.env.REACT_APP_API_KEY
   let url;
   if (this.props.category === 'anime') {
-    url = `https://gnews.io/api/v4/search?q=anime&lang=en&country=us&max=10&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}`;
+    url = `${anime}&page=${pageNo}`;
   } else {
-    url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&max=6&apikey=3b99c7838d1c1477550b4c7ae80ff9a6&page=${pageNo}`;
+    url = `${http}?q=${this.props.category}&lang=en&max=6&apikey=${api}&page=${pageNo}`;
   }
 
   let data = await fetch(url);
