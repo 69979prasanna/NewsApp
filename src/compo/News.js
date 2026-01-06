@@ -27,9 +27,11 @@ export default class News extends Component {
 
   fetchNews = async (pageNo) => {
   this.setState({ loading: true, page: pageNo });
+  const category = this.props.category || "general";
+  const page = this.state.page || 1;
   let url;
   
-    url = `${window.location.origin}/api/news?category=${this.props.category}&page=${page}`;
+    url = `${window.location.origin}/api/news?category=${category}&page=${page}`;
 
   let data = await fetch(url);
   let parsedata = await data.json();
