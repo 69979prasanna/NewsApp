@@ -3,8 +3,8 @@ export default class About extends Component {
   render() {
     return (
       <div>
-        <div className="container my-3" >
-    <div className="accordion mx-2" id="accordionExample">
+        <div className="container my-5" >
+    <div className="accordion mx-2 my-5" id="accordionExample">
       <h1>📰 About NewsApp</h1>
        <div className="accordion-item">
     <h2 className="accordion-header">

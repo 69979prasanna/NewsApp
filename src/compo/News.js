@@ -27,15 +27,9 @@ export default class News extends Component {
 
   fetchNews = async (pageNo) => {
   this.setState({ loading: true, page: pageNo });
-  const anime = process.env.REACT_APP_ANIME
-  const http = process.env.REACT_APP_HTTP
-  const api = process.env.REACT_APP_API_KEY
   let url;
-  if (this.props.category === 'anime') {
-    url = `${anime}&page=${pageNo}`;
-  } else {
-    url = `${http}?q=${this.props.category}&lang=en&max=6&apikey=${api}&page=${pageNo}`;
-  }
+  
+    url = `http://localhost:3000/api/news?q=${this.props.category}&page=${pageNo}`;
 
   let data = await fetch(url);
   let parsedata = await data.json();
