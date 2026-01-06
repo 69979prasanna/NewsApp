@@ -29,7 +29,7 @@ export default class News extends Component {
   this.setState({ loading: true, page: pageNo });
   let url;
   
-    url = `https://news-app-kohl-omega.vercel.app/api/news?category=${category}&page=${page}`;
+    url = `${window.location.origin}/api/news?category=${this.props.category}&page=${page}`;
 
   let data = await fetch(url);
   let parsedata = await data.json();
