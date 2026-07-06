@@ -67,3 +67,4 @@ Dark mode support
 
 Contributions are welcome!
 Feel free to fork this repo and submit a pull request.
+<img width="1900" height="967" alt="Screenshot 2026-07-06 102333" src="https://github.com/user-attachments/assets/2aadd99b-9045-4305-bc52-109dbf9be6f2" />
